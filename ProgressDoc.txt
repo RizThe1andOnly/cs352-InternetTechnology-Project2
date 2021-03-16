@@ -1,0 +1,34 @@
+CS352 Project 2 Progress Document
+
+--- 3/16/2021 ---
+
+    - Created ls.py, ts1.py, and client.py files (they are not fully implemented or implemented at all).
+
+    - ls.py is similar to rs.py from project1 so the contents of rs.py have been copied into it. It will
+    need to be updated to meet the requirements for project 2.
+
+    - ts1.py (and ts2.py) should be the same as ts.py from project1 so its contents have been copied. From what
+    the instructions say so far there should not be any need to change the ts1.py too much.
+
+    - client.py is similar to client.py from project1 which is why its contents have been copied. This file will
+    need to be updated to fit the requirements of projcet2, which I think i have done already but it will have to be checked
+    further.
+
+    TODOs (for now that i can think of):
+        - Complete the processDNSQuery() method in ls.py, notes on its requirements can be found in the ls.py file.
+        NOTE : To complete this method another method (and maybe more) have to be created. See the next item on this
+        list.
+
+        - Create methods for creating connection to top levels servers ts1 and ts2 and then requesting DNS entries from
+        them. As noted in the notes for processDNSQuery() in ls.py the project's task will require the use of threads, so
+        the method defined here will work for both ts1 and ts2. Two threads will be created each calling this method with
+        the appropriate parameters to call the separate top level servers. Then the return value of this method should be
+        the response from the top level servers if there are any.
+
+        - To accomplish the item above (item 2) we need to look up and learn how to use threads in python. In particular,
+        we need to know some key things regarding how to work with them. We need to look up how to send "interrupts". Also,
+        we need to learn how to extract return values from methods called by an external thread.
+
+        NOTE : The current methodology of using threads under consideration may not be the one we ultimately end up pursuing.
+        For now this is simply a starting point for investigation, after doing some research and more brainstorming we will 
+        finalize which method we will pursue.
