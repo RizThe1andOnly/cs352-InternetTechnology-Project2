@@ -32,3 +32,13 @@ CS352 Project 2 Progress Document
         NOTE : The current methodology of using threads under consideration may not be the one we ultimately end up pursuing.
         For now this is simply a starting point for investigation, after doing some research and more brainstorming we will 
         finalize which method we will pursue.
+----------
+
+--- 3/19/2021 ---
+
+    - Created a file called threadingPractice which includes an example of a method to solve the main part of project 2.
+    How to have two simultaneous threads running at the same time and get the output from only one of them. Also to shut
+    down the threads after 5 seconds.
+
+    TODOs :
+        - Actually implement the method in threadingPractice() for project two.
