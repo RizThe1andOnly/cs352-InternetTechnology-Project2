@@ -42,3 +42,12 @@ CS352 Project 2 Progress Document
 
     TODOs :
         - Actually implement the method in threadingPractice() for project two.
+----------------
+
+--- 3/20/2021 ---
+
+    - Should've done this earlier but read the instructions more carefully now and looked into non-blocking sockets.
+    This seems like a good option to explore so it would be good to check it out as well.
+
+    TODO:
+        - Look into and maybe implement non-blocking socket calls for projcet2.

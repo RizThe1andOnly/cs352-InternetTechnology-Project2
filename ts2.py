@@ -1,3 +1,5 @@
+#note : ts2.py should be the same as t1.py (i think so, so far). the only difference being that it will read from a different input file, PROJ2-DNSTS2.txt.
+
 # changes made include:
 # change the toBeReturned in processDNSQuery() to None in the case that the item being queried does not exist in the dns file for this server
 # changed the code in server() so no reply sent to if the queried value is not in the dns file for this server aka toBeReturned in processDNSQuery() = None
@@ -32,7 +34,7 @@ MAX_REQUEST_SIZE = 200
 TS_BIND_ADDRESS = ''
 ERROR_MESSAGE = '- Error:HOST NOT FOUND'
 
-def getDNSEntries(filePath = "./PROJ2-DNSTS1.txt"):
+def getDNSEntries(filePath = "./PROJ2-DNSTS2.txt"):
     r"""
         Will read the "PROJI-DNSRS.txt" file to obtain the DNS entries to be stored for the 
         server. Will go through each line and put the entries in a dictionary as described above.
