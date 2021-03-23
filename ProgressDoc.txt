@@ -51,3 +51,27 @@ CS352 Project 2 Progress Document
 
     TODO:
         - Look into and maybe implement non-blocking socket calls for projcet2.
+----------------
+
+--- 3/21/2021 to 3/23/2021 ---
+
+    - Implemented non-blocking sockets with the select statement for the project and it seems to work. So far results are
+    returnd and judging from the example doc it seems that they are correct. 
+    
+    - There was an issue with establishing connections with the top level servers from ls.py after the initial initiation.
+    The program threw an error upon trying to establish a connection for a second time when a connection already existed.
+    This was due to human error. Only one connection should have been maintained at all times rather than tyring to create
+    new connections with the same endpoint while one already existed. This issue was resolved by moving the location of the
+    connection setup to a point before ls.py began iterations where it would receive a hostname to query and pass it on to the
+    top level servers.
+
+    - A new issue that presents itself is regarding the termination of the top level servers after all of the host names that
+    have to be queried have been. The processes that the top level servers are being run in are not being terminated after the
+    operations are completed. Initailly, the thought process was that when ls.py finished querying all of the hostnames it would
+    do a <socket-name>.close() for each of the top level server and that would cause the connections to close with the top level servers.
+    Then upon the colsing of the connections the processes themselves would exit due to an exception being raised when the connection
+    closed. This does not seems to be the case at the point. Will investigate this further today.
+
+    TODO:
+        - Figure out how to close the top level servers after all of the querying is complete.
+        - Thoroughly test the code with different inputs to see if everything is functioning as it should.

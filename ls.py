@@ -44,13 +44,17 @@ def setupConnections(ts1ConnData,ts2ConnData):
         ts2_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         ts1_socket.connect(ts1ConnData)
         ts2_socket.connect(ts2ConnData)
+        ts1_socket.setblocking(False)
+        ts2_socket.setblocking(False)
     except:
+        print('Exception:',sys.exc_info()[0])
         exit()
+    
     
     return ts1_socket,ts2_socket
 
 
-def processDNSQuery(queriedHostname,ts1ConnData,ts2ConnData):
+def processDNSQuery(queriedHostname,ts1_socket,ts2_socket):
     r"""
        @TODO : Test if current implementation of this method works; set up the testing for the current implementation.
 
@@ -69,14 +73,10 @@ def processDNSQuery(queriedHostname,ts1ConnData,ts2ConnData):
         - Non-Blocking recv calls ( this one will be tried out first). Can all be done in this one method.
     """
     
-    #set up the sockets and connection that will be used to contact the top level servers:
-    ts1_socket,ts2_socket = setupConnections(ts1ConnData,ts2ConnData)
-
     #send each of the toplevel servers the queried hostname:
     encodedQueriedHostname = queriedHostname.encode('utf-8')
     ts1_socket.send(encodedQueriedHostname)
     ts2_socket.send(encodedQueriedHostname)
-
     #use select statement to wait for the top level server that returns data for 5 seconds:
     read_output,_,_ = select.select([ts1_socket,ts2_socket],[],[],TIME_OUT_CONSTANT)
 
@@ -84,7 +84,8 @@ def processDNSQuery(queriedHostname,ts1ConnData,ts2ConnData):
     if len(read_output) > 0:
         toBeReturned = read_output[0].recv(BUFFER_SIZE).decode('utf-8')
     else:
-        toBeReturned = queriedHostname + ERROR_MESSAGE
+        toBeReturned = ERROR_MESSAGE
+    
     
     return toBeReturned
 
@@ -123,6 +124,9 @@ def server(lsListenPort,ts1ConnData,ts2ConnData):
     except:
         exit()
     
+    #set up the sockets and connection that will be used to contact the top level servers:
+    ts1_socket,ts2_socket = setupConnections(ts1ConnData,ts2ConnData)
+    
     serverBindingDetails = (hostAddress,hostPort)
     serverSocket.bind(serverBindingDetails)
     serverSocket.listen(1)
@@ -139,7 +143,7 @@ def server(lsListenPort,ts1ConnData,ts2ConnData):
             clientDataReceived = clientDataReceived_bytes.decode('utf-8').strip()
 
             #   check if hostname is in the root dns server:
-            toBeSentBackToClient = processDNSQuery(clientDataReceived,ts1ConnData,ts2ConnData)
+            toBeSentBackToClient = processDNSQuery(clientDataReceived,ts1_socket,ts2_socket)
 
             #   return the results to the client:
             clientSocketId.send(toBeSentBackToClient.encode('utf-8'))
@@ -147,6 +151,9 @@ def server(lsListenPort,ts1ConnData,ts2ConnData):
             break
     
 
+    # close all connections:
+    ts1_socket.close()
+    ts2_socket.close()
     serverSocket.close()
     exit()
 
@@ -157,13 +164,13 @@ if __name__ == "__main__":
     #get the port from command line arg:
     lsListenPort = int(sys.argv[1])
     ts1Hostname = sys.argv[2]
-    ts1ListenPort = sys.argv[3]
+    ts1ListenPort = int(sys.argv[3])
     ts2Hostname = sys.argv[4]
-    ts2ListenPort = sys.argv[5]
+    ts2ListenPort = int(sys.argv[5])
 
     # if being tested on same machine:
-    ts1Hostname = socket.gethostbyname(socket.gethostname('')) if ts1Hostname == 'localhost' else ts1Hostname
-    ts2Hostname = socket.gethostbyname(socket.gethostname('')) if ts2Hostname == 'localhost' else ts2Hostname
+    ts1Hostname = socket.gethostbyname(socket.gethostname()) if ts1Hostname == 'localhost' else ts1Hostname
+    ts2Hostname = socket.gethostbyname(socket.gethostname()) if ts2Hostname == 'localhost' else ts2Hostname
 
     #set up connection data tuples:
     ts1ConnData = (ts1Hostname,ts1ListenPort)

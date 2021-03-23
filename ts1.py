@@ -145,14 +145,13 @@ def server(tsPort):
     # loop so that multiple requests can be received:
     while(1):
         try:
-
             #   extract data from client socket:
             clientDataReceived_bytes = clientSocketId.recv(MAX_REQUEST_SIZE)
             clientDataReceived = clientDataReceived_bytes.decode('utf-8').strip()
 
             #   check if hostname is in the toplevel dns server:
             toBeSentBackToClient = processDNSQuery(clientDataReceived,dnsDict)
-
+            
             #   return the results to the client if they exist:
             if toBeSentBackToClient is not None:
                 clientSocketId.send(toBeSentBackToClient.encode('utf-8'))
@@ -164,7 +163,8 @@ def server(tsPort):
     exit()
 
 if __name__ == "__main__":
-
+    #print(os.getpid())
+    
     #get command line argument for the port
     tsPort = int(sys.argv[1])
 

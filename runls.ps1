@@ -1,0 +1,1 @@
+py .\ls.py 50001 localhost 50002 localhost 50003

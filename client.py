@@ -15,9 +15,11 @@
 #imports
 import socket
 import sys
+import os
 
 # constants (will use constants to define the address and port for rs and ts until clarification is obtained); these will be changed
 RS_HOSTADDRESS_LOCAL = socket.gethostbyname(socket.gethostname())
+HOST_QUERY_FILE = './PROJ2-HNS.txt'
 NS_FLAG = "NS"
 TS_RESPONSE_MARKER = 'NS'
 OUTPUT_FILE_PATH = './RESOLVED.txt' #this needs to be changed to just RESOLVED.txt
@@ -25,7 +27,7 @@ BUFFER_SIZE = 200
 RESULT_STRING_DELIMITER = '\n'
 
 
-def readInputFile(filePath='./PROJI-HNS.txt'):
+def readInputFile(filePath=HOST_QUERY_FILE):
     r"""
         Read the input file line by line. Lines will be stored in a list and returned.
 
@@ -85,8 +87,6 @@ def clientFunctionalities(rsHostName,rsPort):
     clientSocket_rs = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
     #   set destination details and create socket connections:
-    if rsHostName == 'localhost':
-        rsHostAddress = RS_HOSTADDRESS_LOCAL
     rs_destination = (rsHostAddress,rsPort)
     clientSocket_rs.connect(rs_destination)
 
@@ -116,10 +116,13 @@ def clientFunctionalities(rsHostName,rsPort):
 
 
 if __name__ == "__main__":
-    
+    print(os.getpid())
+
     # parse the command line arguments; the positions of the args are based on instructions:
     listOfArguments = sys.argv
     rsHostAddress = str(listOfArguments[1])
     rsPort = int(listOfArguments[2])
+
+    rsHostAddress = socket.gethostbyname(socket.gethostname()) if rsHostAddress == 'localhost' else rsHostAddress
 
     clientFunctionalities(rsHostAddress,rsPort)
