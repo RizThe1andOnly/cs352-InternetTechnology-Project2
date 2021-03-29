@@ -75,3 +75,13 @@ CS352 Project 2 Progress Document
     TODO:
         - Figure out how to close the top level servers after all of the querying is complete.
         - Thoroughly test the code with different inputs to see if everything is functioning as it should.
+----------------------------
+
+--- 3/29/2021 ---
+
+    - The code should be complete now, the only thing that remains is thoroughly checking for input cases and then making
+    any necessary changes.
+
+    - Fixed the issue of the ts1 and ts2 server not stopping when all of the hostnames have been queried. The solution that
+    was implemented for that purpose was to send an additional message to ts1 and ts2 from ls right before ls finished. It
+    was a special string "BREAK_STATEMENT" that the two servers would recognize and then stop themselves upon receiving it.
