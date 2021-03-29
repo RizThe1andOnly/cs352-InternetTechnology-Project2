@@ -31,7 +31,6 @@ TIME_OUT_CONSTANT = 5 # 5 seconds before timeout
 MAX_REQUEST_SIZE = 200
 BUFFER_SIZE = 200
 RS_BIND_ADDRESS = ''
-BREAK_STATEMENT = "BreakLoop"
 
 
 def setupConnections(ts1ConnData,ts2ConnData):
@@ -152,9 +151,9 @@ def server(lsListenPort,ts1ConnData,ts2ConnData):
             break
     
 
-    # close all connections; the send statements sending the break statement should break the loop within the other servers:
-    ts1_socket.send(BREAK_STATEMENT.encode('utf-8'))
-    ts2_socket.send(BREAK_STATEMENT.encode('utf-8'))
+    # close all connections:
+    ts1_socket.close()
+    ts2_socket.close()
     serverSocket.close()
     exit()
 

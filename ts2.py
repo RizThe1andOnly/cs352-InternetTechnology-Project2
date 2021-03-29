@@ -33,6 +33,7 @@ ROOT_SERVER = "RootServer"
 MAX_REQUEST_SIZE = 200
 TS_BIND_ADDRESS = ''
 ERROR_MESSAGE = '- Error:HOST NOT FOUND'
+BREAK_STATEMENT = "BreakLoop"
 
 def getDNSEntries(filePath = "./PROJ2-DNSTS2.txt"):
     r"""
@@ -150,6 +151,10 @@ def server(tsPort):
             #   extract data from client socket:
             clientDataReceived_bytes = clientSocketId.recv(MAX_REQUEST_SIZE)
             clientDataReceived = clientDataReceived_bytes.decode('utf-8').strip()
+
+            # happesn when ls is finished executing; message to stop this loop so that the thread can stop
+            if clientDataReceived == BREAK_STATEMENT:
+                break
 
             #   check if hostname is in the toplevel dns server:
             toBeSentBackToClient = processDNSQuery(clientDataReceived,dnsDict)
